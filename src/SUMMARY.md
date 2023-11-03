@@ -1,8 +1,15 @@
 # Summary
 
 - [Chapter 3](./chapter_1.md)
+    - [3.4 Installing docker-postgis](./chapter_1.md)
 - [Chapter 4](./chapter_4.md)
+    - [4.3 Database organization and design](./chapter_4.md)
+    - [4.5 Projections](./4-5.md)
+    - [4.6 Thinking in SQL](./4-6.md)
+    - [4.7 Optimizing our queries and other tips](./4-7.md)
+    - [4.8 Using pseudo-code and "rubber ducking"](./4-8.md)
 - [Chapter 5](./chapter_5.md)
 - [Chapter 6](./chapter_6.md)
 - [Chapter 7](./chapter_7.md)
-
+- [Chapter 8](./chapter_8.md)
+- [Chapter 9](./chapter_9.md)
