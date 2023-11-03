@@ -969,7 +969,7 @@ select
 from
     nyc_taxi_union_square;
     
-create table nyc_taxi_union_square_lines as
+create table nyc_taxi_union_square_roads as
 select
     geom,
     name,
@@ -979,7 +979,7 @@ from
     
 create table nyc_taxi_union_square_points as
 select
-    points,
+    pickup,
     name,
     ogc_fid
 from
