@@ -1,0 +1,6 @@
+[book]
+authors = ["Matt Forrest"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Spatial SQL: Code Reference"
