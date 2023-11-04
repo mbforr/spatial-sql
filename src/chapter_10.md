@@ -80,112 +80,7 @@ order by
     a.pop desc
 ```
 
-## 10.2 Nearest neighbor in report format
 
-### 10.5
-
-```sh
-ogr2ogr \
-    - f PostgreSQL PG :"host=localhost user=docker password=docker \ 
-    dbname=gis port=25432" Subway_Entrances.geojson \ 
-    - nln nyc_subway_enterances - lco GEOMETRY_NAME = geom
-```
-
-### 10.6
-
-```sql
-select
-    sw.name,
-    sw.objectid,
-    near.tree_id,
-    near.spc_common,
-    near.distance
-from
-    nyc_subway_enterances sw
-
-    -- Since this is a cross join it will join to every possible combination
-    -- Since we have a limit of 5 below, it will join it to each row in the
-    -- main subway enterances table 5 times
-    cross join lateral (
-        select
-            tree_id,
-            spc_common,
-            st_distance(sw.geom :: geography, geom :: geography) as distance
-        from
-            nyc_2015_tree_census
-        order by
-            sw.geom <-> geom
-        limit
-            5
-    ) near 
-```
-
-### 10.7
-
-```sql
-select
-    sw.name,
-    sw.objectid,
-    near.tree_id,
-    near.spc_common,
-    near.distance,
-    near.ranking
-from
-    nyc_subway_enterances sw
-    cross join lateral (
-        select
-            tree_id,
-            spc_common,
-            st_distance(sw.geom :: geography, geom :: geography) as distance,
-            row_number() over() as ranking
-        from
-            nyc_2015_tree_census
-        order by
-            sw.geom <-> geom
-        limit
-            5
-    ) near
-limit
-    50
-```
-
-### 10.8
-
-```sql
-select
-    sw.name,
-    sw.objectid,
-    near.tree_id,
-    near.spc_common,
-    near.distance,
-    rank() over(
-
-        -- The partition will perform the ranking for each 
-        -- subway enterance ID for the 5 matching trees linked
-        -- to that station ID
-        partition by sw.objectid
-
-        -- The ranking will be ordered by the distance
-        order by
-            distance desc
-    )
-from
-    nyc_subway_enterances sw
-    cross join lateral (
-        select
-            tree_id,
-            spc_common,
-            st_distance(sw.geom :: geography, geom :: geography) as distance
-        from
-            nyc_2015_tree_census
-        order by
-            sw.geom <-> geom
-        limit
-            5
-    ) near
-limit
-    50
-```
 
 ## 10.3 Flat line of sight
 
@@ -245,7 +140,7 @@ from
     a
 ```
 
-### 10.1
+### 10.12
 
 ```sql
 with a as (
